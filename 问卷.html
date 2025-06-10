@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试结果 - 中国式现代化知识测试</title>
+    <style>
+        :root {
+            --primary-color: #e60012;
+            --primary-dark: #b2000d;
+            --secondary-color: #f8f1e9;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .result-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 1rem 0;
+        }
+        
+        .score-bar {
+            height: 10px;
+            background: var(--light-gray);
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        
+        .score-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #e60012, #ff6b6b);
+            border-radius: 5px;
+            transition: width 1s ease-out;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 1rem;
+            box-shadow: 0 2px 8px rgba(230, 0, 18, 0.3);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(230, 0, 18, 0.2);
+            margin: 0.5rem;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(230, 0, 18, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .certificate {
+            display: none;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem auto;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 2px dashed var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .certificate::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="50" font-family="Arial" font-size="20" fill="rgba(230,0,18,0.05)" transform="rotate(-45 50,50)">中国式现代化</text></svg>');
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .certificate-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .certificate h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .certificate-info {
+            margin: 1.5rem 0;
+            text-align: left;
+            padding: 0 1rem;
+        }
+        
+        .certificate-info p {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .certificate-info strong {
+            color: var(--primary-color);
+        }
+        
+        .certificate-footer {
+            margin-top: 2rem;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .seal {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transform: rotate(-15deg);
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .score-display {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(230, 0, 18, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>中国式现代化知识测试结果</h1>
+            <p>感谢您参与本次知识测试，以下是您的测试结果</p>
+        </header>
+        
+        <div class="result-card">
+            <h2>您的得分</h2>
+            <div class="score-display" id="scoreDisplay">0</div>
+            <div class="score-bar">
+                <div class="score-progress" id="scoreProgress"></div>
+            </div>
+            <p>正确回答了 <strong id="correctCount">0</strong> 道题目，共 10 题</p>
+            <div class="level-badge" id="levelBadge">初识者</div>
+            
+            <button class="btn" id="generateBtn">生成电子证书</button>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>正在生成证书，请稍候...</p>
+            </div>
+        </div>
+        
+        <div class="certificate" id="certificate">
+            <div class="certificate-content">
+                <h2>中国式现代化知识测试证书</h2>
+                <div class="certificate-info">
+                    <p><strong>姓名：</strong><span id="certName">张三</span></p>
+                    <p><strong>得分：</strong><span id="certScore">8</span>/10</p>
+                    <p><strong>等级：</strong><span id="certLevel">专家级</span></p>
+                    <p><strong>日期：</strong><span id="certDate">2023年11月15日</span></p>
+                </div>
+                <div class="certificate-footer">
+                    <p>特发此证，以资鼓励</p>
+                    <p>祝贺您成为中国式现代化的学习者！</p>
+                </div>
+                <div class="seal">电子印章</div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="btn no-print" onclick="window.print()">打印证书</button>
+            <button class="btn no-print" id="downloadBtn" style="display: none;">下载证书</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // 正确答案数组
+        const correctAnswers = ['B', 'A', 'ABC', 'A', 'A', 'B', 'C', 'A', 'ABD', ''];
+        
+        // 获取URL参数中的答案
+        function getAnswersFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('answers') || '';
+        }
+        
+        // 计算得分
+        function calculateScore(answers) {
+            let score = 0;
+            for (let i = 0; i < answers.length && i < correctAnswers.length; i++) {
+                if (answers[i] === correctAnswers[i]) {
+                    score++;
+                }
+            }
+            return score;
+        }
+        
+        // 获取等级
+        function getLevel(score) {
+            if (score <= 3) return "初识者";
+            else if (score <= 7) return "进阶者";
+            else return "专家级";
+        }
+        
+        // 显示结果
+        function displayResult(score, level) {
+            // 动画显示分数
+            let current = 0;
+            const target = score;
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const correctCount = document.getElementById('correctCount');
+            const levelBadge = document.getElementById('levelBadge');
+            const scoreProgress = document.getElementById('scoreProgress');
+            
+            const timer = setInterval(() => {
+                current++;
+                scoreDisplay.textContent = current;
+                correctCount.textContent = current;
+                scoreProgress.style.width = `${current * 10}%`;
+                
+                if (current >= target) {
+                    clearInterval(timer);
+                    levelBadge.textContent = level;
+                    levelBadge.style.display = 'inline-block';
+                }
+            }, 100);
+        }
+        
+        // 初始化
+        function init() {
+            const answers = getAnswersFromURL();
+            const score = calculateScore(answers);
+            const level = getLevel(score);
+            
+            displayResult(score, level);
+            
+            // 设置证书默认值
+            document.getElementById('certScore').textContent = score;
+            document.getElementById('certLevel').textContent = level;
+            
+            // 设置当前日期
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
+            document.getElementById('certDate').textContent = dateStr;
+        }
+        
+        // 生成证书
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            const name = prompt("请输入您的姓名以生成证书：", "测试用户");
+            if (!name) return;
+            
+            document.getElementById('certName').textContent = name;
+            document.getElementById('certificate').style.display = 'block';
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+            
+            // 滚动到证书位置
+            document.getElementById('certificate').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        });
+        
+        // 下载证书
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            // 使用setTimeout让加载动画至少显示1秒
+            setTimeout(() => {
+                const { jsPDF } = window.jspdf;
+                const certificate = document.getElementById('certificate');
+                
+                html2canvas(certificate, {
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgWidth = 190;
+                    const pageHeight = 277;
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    let heightLeft = imgHeight;
+                    let position = 10;
+                    
+                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                    
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    
+                    const name = document.getElementById('certName').textContent;
+                    pdf.save(`${name}_中国式现代化知识证书.pdf`);
+                    loading.style.display = 'none';
+                }).catch(err => {
+                    console.error('生成证书出错:', err);
+                    alert('生成证书时出错，请重试');
+                    loading.style.display = 'none';
+                });
+            }, 1000);
+        });
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
